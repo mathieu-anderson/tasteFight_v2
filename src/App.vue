@@ -1,21 +1,12 @@
 <template>
   <div id="app">
-    <img src="./assets/logo.png">
-    <h1>{{ msg }}</h1>
-    <h2>Essential Links</h2>
-    <ul>
-      <li><a href="https://vuejs.org" target="_blank">Core Docs</a></li>
-      <li><a href="https://forum.vuejs.org" target="_blank">Forum</a></li>
-      <li><a href="https://gitter.im/vuejs/vue" target="_blank">Gitter Chat</a></li>
-      <li><a href="https://twitter.com/vuejs" target="_blank">Twitter</a></li>
-    </ul>
-    <h2>Ecosystem</h2>
-    <ul>
-      <li><a href="http://router.vuejs.org/" target="_blank">vue-router</a></li>
-      <li><a href="http://vuex.vuejs.org/" target="_blank">vuex</a></li>
-      <li><a href="http://vue-loader.vuejs.org/" target="_blank">vue-loader</a></li>
-      <li><a href="https://github.com/vuejs/awesome-vue" target="_blank">awesome-vue</a></li>
-    </ul>
+    <h1>tasteFight</h1>
+      <h2>{{msg}}</h2>
+      <form v-show="showForm" v-on:submit.prevent="onSubmit" class="submitMovie">
+        <input type="text" name="" value="" v-model="movie_name">
+        <input type="submit" name="submit" id="submit" value="fight!" v-on:keyup.enter="submit">
+      </form>
+      <div id="movie_name">{{movie_name}}</div>
   </div>
 </template>
 
@@ -24,7 +15,15 @@ export default {
   name: 'app',
   data () {
     return {
-      msg: 'Welcome to Your Vue.js App'
+      msg: 'Fight for your tastes!',
+      showForm: true,
+      movie_name: ''
+    }
+  },
+  methods: {
+    onSubmit: function () {
+      console.log(this.movie_name)
+      return this.showForm = false
     }
   }
 }
@@ -40,7 +39,22 @@ export default {
   margin-top: 60px;
 }
 
-h1, h2 {
+#movie_name {
+  padding: 20px;
+  font-size: 60px;
+  font-style: italic;
+}
+
+.submitMovie {
+  padding: 20px;
+}
+
+h1 {
+  font-size: 40px;
+  font-weight: bold;
+}
+
+h2 {
   font-weight: normal;
 }
 
