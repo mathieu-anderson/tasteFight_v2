@@ -43,7 +43,22 @@
       </div>
       <div class="rate"
         v-show="showRate">
-        How do you rate it ?
+          How do you rate it ?
+          <div class="star-rating">
+            <label class="star-rating__star"
+              v-for="rating in ratings"
+              v-bind:class="{selected: ((value >= rating && value != null))}"
+              v-on:mouseover="starOver(rating)"
+              v-on:mouseout="starOut(rating)"
+              v-on:click="setRate(rating)">
+                <input
+                  class="star-rating star-rating__checkbox"
+                  type="radio"
+                  v-model="value">
+                    ★
+            </label>
+          </div>
+          Your rating : {{value}} 
       </div>
   </div>
 </template>
@@ -53,14 +68,22 @@
 // import 'vue-instant/dist/vue-instant.css'
 // Vue.use(VueInstant)
 import axios from 'axios'
+import Rating from 'vue-bulma-rating'
 
 // const TMDB_api_key = '3afb334973093028cc5d28d0464b6383'
 // const test = process.env.TMDB_API_KEY
 
 export default {
   name: 'app',
+  components: {
+    Rating
+  },
   data () {
     return {
+      //rating component
+      value: '',
+      temp_value: '',
+      ratings: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
       TMDB_api_key: '3afb334973093028cc5d28d0464b6383',
       msg: 'Fight for your tastes!',
       showForm: true,
@@ -73,6 +96,21 @@ export default {
     }
   },
   methods: {
+    //rating component
+    starOver: function (index) {
+      this.temp_value = this.value
+      this.value = index
+    },
+
+    starOut: function (index) {
+      this.value = this.temp_value
+    },
+
+    setRate: function (value) {
+      console.log(value)
+    },
+
+    //triggered when submitting a movie name
     onSubmit: function () {
       console.log(this.movie_name)
       axios.get(`https://api.themoviedb.org/3/search/movie?api_key=${this.TMDB_api_key}&language=en-US&query=${this.movie_name}&page=1&include_adult=false`)
@@ -89,6 +127,36 @@ export default {
 </script>
 
 <style>
+
+.star-rating__checkbox {
+  position: absolute;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  height: 1px;
+  width: 1px;
+  margin: -1px;
+  padding: 0;
+  border: 0; }
+
+.star-rating__star {
+  display: inline-block;
+  padding: 3px;
+  vertical-align: middle;
+  line-height: 1;
+  font-size: 1.5em;
+  color: #ababab;
+  transition: color .2s ease-out;
+}
+.star-rating__star:hover {
+  cursor: pointer;
+}
+.star-rating__star.selected {
+  color: #c90000;
+}
+.star-rating__star.disabled:hover {
+  cursor: default;
+}
+
 #app {
   font-family: 'Avenir', Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
