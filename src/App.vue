@@ -16,7 +16,7 @@
    </div> -->
 
   <div id="app" class="container">
-    <h1>tasteFight</h1>
+    <h1 v-on:click="reload()">tasteFight</h1>
       <h2>{{msg}}</h2>
         <form
           v-show="showForm"
@@ -67,7 +67,7 @@
     <p
     v-show="showTMDB">
     Everyone else's rating : {{api_res_rating}}
-    <br />
+    <br>
     <button v-on:click="reload()">again?</button>
   </p>
   </div>
@@ -139,6 +139,7 @@ export default {
           this.api_res_overview = res.data.results[0].overview
           this.api_res_poster = this.poster_base_url + res.data.results[0].poster_path
         })
+        .catch(err => this.reload())
       this.showForm = false
       this.showRate = true
       this.showAPIRes = true
@@ -151,6 +152,13 @@ export default {
       this.showMyrating = false
       this.showTMDB = false
       this.movie_name = ''
+      this.api_res_name = ''
+      this.api_res_overview = ''
+      this.api_res_poster = ''
+      this.api_res_rating = ''
+      this.value = ''
+      this.temp_value = ''
+
     }
   }
 }
@@ -227,6 +235,7 @@ img  {
 h1 {
   font-size: 40px;
   font-weight: bold;
+  cursor: pointer;
 }
 
 h2 {
