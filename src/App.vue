@@ -58,8 +58,13 @@
                     ★
             </label>
           </div>
-          Your rating : {{value}} 
       </div>
+      <p
+      v-show="showMyrating">Your rating : {{value}}</p>
+      <p
+      v-show="showTMDB">
+        Everyone else's rating : {{api_res_rating}}
+      </p>
   </div>
 </template>
 
@@ -88,10 +93,13 @@ export default {
       msg: 'Fight for your tastes!',
       showForm: true,
       showRate: false,
+      showTMDB: false,
+      showMyrating: false,
       movie_name: '',
       api_res_name: '',
       api_res_overview: '',
       api_res_poster: '',
+      api_res_rating: '',
       poster_base_url: 'https://image.tmdb.org/t/p/w300_and_h450_bestv2/'
     }
   },
@@ -107,12 +115,18 @@ export default {
     },
 
     setRate: function (value) {
-      console.log(value)
+      this.showRate = false
+      this.temp_value = value
+      this.value = value
+      this.showTMDB = true
+      axios.get(`https://api.themoviedb.org/3/search/movie?api_key=${this.TMDB_api_key}&language=en-US&query=${this.movie_name}&page=1&include_adult=false`)
+        .then(res => {
+          this.api_res_rating = res.data.results[0].vote_average
+        })
     },
 
     //triggered when submitting a movie name
     onSubmit: function () {
-      console.log(this.movie_name)
       axios.get(`https://api.themoviedb.org/3/search/movie?api_key=${this.TMDB_api_key}&language=en-US&query=${this.movie_name}&page=1&include_adult=false`)
         .then(res => {
           this.api_res_name = res.data.results[0].original_title
@@ -121,6 +135,7 @@ export default {
         })
       this.showForm = false
       this.showRate = true
+      this.showMyrating = true
     }
   }
 }
