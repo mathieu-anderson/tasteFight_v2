@@ -38,7 +38,12 @@
       <div class="api_res">
         <b>{{api_res_name}}</b>
         {{api_res_overview}}
-        <!-- <img v-bind:src="https://image.tmdb.org/t/p/w300_and_h450_bestv2/{{api_res_poster}}"> -->
+        <!-- <img src="https://image.tmdb.org/t/p/w300_and_h450_bestv2//l1yltvzILaZcx2jYvc5sEMkM7Eh.jpg">-->
+        <img v-bind:src="api_res_poster">
+      </div>
+      <div class="rate"
+        v-show="showRate">
+        How do you rate it ?
       </div>
   </div>
 </template>
@@ -48,30 +53,36 @@
 // import 'vue-instant/dist/vue-instant.css'
 // Vue.use(VueInstant)
 import axios from 'axios'
-// const TMDB_api_key =
+
+// const TMDB_api_key = '3afb334973093028cc5d28d0464b6383'
+// const test = process.env.TMDB_API_KEY
 
 export default {
   name: 'app',
   data () {
     return {
+      TMDB_api_key: '3afb334973093028cc5d28d0464b6383',
       msg: 'Fight for your tastes!',
       showForm: true,
+      showRate: false,
       movie_name: '',
       api_res_name: '',
       api_res_overview: '',
-      image_url: 'https://image.tmdb.org/t/p/w300_and_h450_bestv2/'
+      api_res_poster: '',
+      poster_base_url: 'https://image.tmdb.org/t/p/w300_and_h450_bestv2/'
     }
   },
   methods: {
     onSubmit: function () {
       console.log(this.movie_name)
-      axios.get(`https://api.themoviedb.org/3/search/movie?api_key=3afb334973093028cc5d28d0464b6383&language=en-US&query=${this.movie_name}&page=1&include_adult=false`)
+      axios.get(`https://api.themoviedb.org/3/search/movie?api_key=${this.TMDB_api_key}&language=en-US&query=${this.movie_name}&page=1&include_adult=false`)
         .then(res => {
           this.api_res_name = res.data.results[0].original_title
           this.api_res_overview = res.data.results[0].overview
-          this.api_res_poster = res.data.results[0].poster_path
+          this.api_res_poster = this.poster_base_url + res.data.results[0].poster_path
         })
       this.showForm = false
+      this.showRate = true
     }
   }
 }
