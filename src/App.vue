@@ -15,56 +15,58 @@
      <router-view></router-view>
    </div> -->
 
-  <div id="app">
+  <div id="app" class="container">
     <h1>tasteFight</h1>
       <h2>{{msg}}</h2>
-      <form
-        v-show="showForm"
-        v-on:submit.prevent="onSubmit">
-          <input
-          type="text"
+        <form
           v-show="showForm"
-          v-model="movie_name">
-          <input
-          type="submit"
-          value="fight!"
-          v-show="showForm"
-          v-on:keyup.enter="submit">
-      </form>
-      <div id="movie_name"
-        v-show="showForm">
-          {{movie_name}}
-      </div>
-      <div class="api_res">
-        <b>{{api_res_name}}</b>
-        {{api_res_overview}}
-        <!-- <img src="https://image.tmdb.org/t/p/w300_and_h450_bestv2//l1yltvzILaZcx2jYvc5sEMkM7Eh.jpg">-->
-        <img v-bind:src="api_res_poster">
-      </div>
-      <div class="rate"
+          v-on:submit.prevent="onSubmit">
+            <input
+            type="text"
+            v-show="showForm"
+            v-model="movie_name">
+            <input
+            type="submit"
+            value="fight!"
+            v-show="showForm"
+            v-on:keyup.enter="submit">
+        </form>
+        <div id="movie_name"
+          v-show="showForm">
+            {{movie_name}}
+        </div>
+        <div class="api_res">
+          <img v-bind:src="api_res_poster">
+          <br />
+            {{api_res_name}}
+          <br />
+          <br />
+          {{api_res_overview}}
+        </div>
+        <div class="rate"
         v-show="showRate">
-          How do you rate it ?
-          <div class="star-rating">
-            <label class="star-rating__star"
-              v-for="rating in ratings"
-              v-bind:class="{selected: ((value >= rating && value != null))}"
-              v-on:mouseover="starOver(rating)"
-              v-on:mouseout="starOut(rating)"
-              v-on:click="setRate(rating)">
-                <input
-                  class="star-rating star-rating__checkbox"
-                  type="radio"
-                  v-model="value">
-                    ★
-            </label>
-          </div>
+        How do you rate it ?
+        <div class="star-rating">
+          <label class="star-rating__star"
+          v-for="rating in ratings"
+          v-bind:class="{selected: ((value >= rating && value != null))}"
+          v-on:mouseover="starOver(rating)"
+          v-on:mouseout="starOut(rating)"
+          v-on:click="setRate(rating)">
+          <input
+          class="star-rating star-rating__checkbox"
+          type="radio"
+          v-model="value">
+          ★
+        </label>
       </div>
-      <p
-      v-show="showMyrating">Your rating : {{value}}</p>
-      <p
-      v-show="showTMDB">
-        Everyone else's rating : {{api_res_rating}}
-      </p>
+    </div>
+    <p
+    v-show="showMyrating">Your rating : {{value}}</p>
+    <p
+    v-show="showTMDB">
+    Everyone else's rating : {{api_res_rating}}
+  </p>
   </div>
 </template>
 
@@ -143,6 +145,28 @@ export default {
 
 <style>
 
+img  {
+  max-width: 20vw;
+  max-height: 45vh;
+  width: auto;
+  height: auto;
+  margin-right: 3vw;
+}
+
+.container {
+  display: flex;
+  flex-direction: column;
+}
+
+.api_res {
+  display: flex;
+  flex-direction: row;
+  margin-left: 28vw;
+  margin-right: 28vw;
+  text-align: left;
+  padding: 2vh;
+}
+
 .star-rating__checkbox {
   position: absolute;
   overflow: hidden;
@@ -178,7 +202,7 @@ export default {
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
   color: #2c3e50;
-  margin-top: 60px;
+
 }
 
 #movie_name {
