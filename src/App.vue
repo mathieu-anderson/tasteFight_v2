@@ -35,7 +35,8 @@
           v-show="showForm">
             {{movie_name}}
         </div>
-        <div class="api_res">
+        <div class="api_res"
+        v-show="showAPIRes">
           <img v-bind:src="api_res_poster">
           <br />
             {{api_res_name}}
@@ -66,6 +67,8 @@
     <p
     v-show="showTMDB">
     Everyone else's rating : {{api_res_rating}}
+    <br />
+    <button v-on:click="reload()">again?</button>
   </p>
   </div>
 </template>
@@ -97,6 +100,7 @@ export default {
       showRate: false,
       showTMDB: false,
       showMyrating: false,
+      showAPIRes: false,
       movie_name: '',
       api_res_name: '',
       api_res_overview: '',
@@ -137,7 +141,16 @@ export default {
         })
       this.showForm = false
       this.showRate = true
+      this.showAPIRes = true
       this.showMyrating = true
+    },
+    reload: function () {
+      this.showForm = true
+      this.showAPIRes = false
+      this.showRate = false
+      this.showMyrating = false
+      this.showTMDB = false
+      this.movie_name = ''
     }
   }
 }
@@ -146,7 +159,7 @@ export default {
 <style>
 
 img  {
-  max-width: 20vw;
+  max-width: 45vw;
   max-height: 45vh;
   width: auto;
   height: auto;
