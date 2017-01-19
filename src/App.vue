@@ -41,13 +41,13 @@
 
         <div class="api_res_list"
           v-show="showList">
-          Did you mean ...
+          <span class="big">Did you mean ...</span>
           <ul>
-            <li class="{ bold }"
+            <li
               v-for="movie in api_res_movie_list"
               v-on:click="onChoosing(movie.original_title, movie.release_date)"
               v-on:hover="embolden()">
-                {{movie.original_title}}
+                <i>{{movie.original_title}}</i>
                 ({{movie.release_date[0]}}{{movie.release_date[1]}}{{movie.release_date[2]}}{{movie.release_date[3]}})
                 <!-- <img v-bind:src="poster_base_url + movie.poster_path"> -->
             </li>
@@ -57,11 +57,19 @@
         <div class="api_res"
         v-show="showAPIRes">
           <img v-bind:src="api_res_poster">
+          <table>
+            <tr>
+              <td class="big"><i>{{api_res_name}}</i></td>
+            </tr>
+            <tr>
+              <td>{{api_res_overview}}</td>
+            </tr>
+          </table>
+          <!-- <br />
+            <i>{{api_res_name}}</i>
           <br />
-            {{api_res_name}}
           <br />
-          <br />
-          {{api_res_overview}}
+          {{api_res_overview}} -->
         </div>
 
         <div class="rate"
@@ -85,59 +93,42 @@
 
     <p
     v-show="showTMDB">
-    <table>
-      <tr>
-        <td class="rating_head"> Your rating</td>
-        <td class="rating_head">{{api_res_number_of_votes}} people's rating</td>
-        <td class="rating_head">RandomProfileName's rating</td>
-      </tr>
-      <tr>
-        <td class="rating_values">{{value}}</td>
-        <td class="rating_values">{{api_res_rating}}</td>
-        <td class="rating_values">1</td>
-      </tr>
-      <tr>
-        <td>
-          <a class="button"
-            v-on:click="reload()">
-              Again?
-          </a>
-        </td>
-        <td>
-          <a class="button"
-            v-bind:href="go_to_TMDB"
-            v-on:mouseover="goToTMDB()"
-            target="_blank">
-            Fight with {{api_res_number_of_votes}} people?
-          </a>
-        </td>
-        <td>
-          <a class="button"
-            v-bind:href="go_to_TMDB"
-            v-on:mouseover="goToTMDB()"
-            target="_blank">
-            Fight with RandomProfileName?
-          </a>
-        </td>
-      </tr>
-    </table>
-      <!-- <br><br>
-      <a class="button"
-        v-on:click="reload()">
-          Again?
-      </a>
-      <a class="button"
-        v-bind:href="go_to_TMDB"
-        v-on:mouseover="goToTMDB()"
-        target="_blank">
-        Fight with {{api_res_number_of_votes}} people?
-      </a>
-      <a class="button"
-        v-bind:href="go_to_TMDB"
-        v-on:mouseover="goToTMDB()"
-        target="_blank">
-        Fight with RandomProfileName?
-      </a> -->
+      <table>
+        <tr>
+          <td class="rating_head"> Your rating</td>
+          <td class="rating_head">{{api_res_number_of_votes}} people's rating</td>
+          <td class="rating_head">RandomProfileName's rating</td>
+        </tr>
+        <tr>
+          <td class="rating_values">{{value}}</td>
+          <td class="rating_values">{{api_res_rating}}</td>
+          <td class="rating_values">1</td>
+        </tr>
+        <tr>
+          <td>
+            <a class="button"
+              v-on:click="reload()">
+                Again?
+            </a>
+          </td>
+          <td>
+            <a class="button"
+              v-bind:href="go_to_TMDB"
+              v-on:mouseover="goToTMDB()"
+              target="_blank">
+              Fight with {{api_res_number_of_votes}} people?
+            </a>
+          </td>
+          <td>
+            <a class="button"
+              v-bind:href="go_to_TMDB"
+              v-on:mouseover="goToTMDB()"
+              target="_blank">
+              Fight with RandomProfileName?
+            </a>
+          </td>
+        </tr>
+      </table>
     </p>
 
   </div>
@@ -266,6 +257,10 @@ export default {
 
 <style>
 
+.big {
+  font-size: 18pt;
+}
+
 .rating_head {
   font-size: 14pt;
   font-weight: bold;
@@ -311,7 +306,7 @@ img  {
   max-height: 45vh;
   width: auto;
   height: auto;
-  margin-right: 3vw;
+  margin-right: 1vw;
 }
 
 .container {
@@ -322,10 +317,10 @@ img  {
 .api_res {
   display: flex;
   flex-direction: row;
-  margin-left: 28vw;
-  margin-right: 28vw;
   text-align: left;
   padding: 2vh;
+  margin-left: 20vw;
+  margin-right: 65vh;
 }
 
 .star-rating__checkbox {
@@ -363,6 +358,7 @@ img  {
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
   color: #2c3e50;
+
 
 }
 
