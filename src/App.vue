@@ -84,23 +84,60 @@
     </div>
 
     <p
-    v-show="showTMDB">Your rating : {{value}}
-    </p>
-
-    <p
     v-show="showTMDB">
-      {{api_res_number_of_votes}} people's rating : {{api_res_rating}}
-      <br><br>
+    <table>
+      <tr>
+        <td class="rating_head"> Your rating</td>
+        <td class="rating_head">{{api_res_number_of_votes}} people's rating</td>
+        <td class="rating_head">RandomProfileName's rating</td>
+      </tr>
+      <tr>
+        <td class="rating_values">{{value}}</td>
+        <td class="rating_values">{{api_res_rating}}</td>
+        <td class="rating_values">1</td>
+      </tr>
+      <tr>
+        <td>
+          <a class="button"
+            v-on:click="reload()">
+              Again?
+          </a>
+        </td>
+        <td>
+          <a class="button"
+            v-bind:href="go_to_TMDB"
+            v-on:mouseover="goToTMDB()"
+            target="_blank">
+            Fight with {{api_res_number_of_votes}} people?
+          </a>
+        </td>
+        <td>
+          <a class="button"
+            v-bind:href="go_to_TMDB"
+            v-on:mouseover="goToTMDB()"
+            target="_blank">
+            Fight with RandomProfileName?
+          </a>
+        </td>
+      </tr>
+    </table>
+      <!-- <br><br>
       <a class="button"
         v-on:click="reload()">
-          again?
+          Again?
       </a>
       <a class="button"
         v-bind:href="go_to_TMDB"
         v-on:mouseover="goToTMDB()"
         target="_blank">
-        fight with them?
+        Fight with {{api_res_number_of_votes}} people?
       </a>
+      <a class="button"
+        v-bind:href="go_to_TMDB"
+        v-on:mouseover="goToTMDB()"
+        target="_blank">
+        Fight with RandomProfileName?
+      </a> -->
     </p>
 
   </div>
@@ -229,6 +266,26 @@ export default {
 
 <style>
 
+.rating_head {
+  font-size: 14pt;
+  font-weight: bold;
+}
+
+.rating_values {
+  font-size: 20pt;
+  font-weight: bold;
+}
+
+table {
+  margin-left: auto;
+  margin-right: auto;
+}
+
+td {
+  padding-left: 20pt;
+  padding-right: 20pt;
+}
+
 .button {
     -webkit-appearance: button;
     -moz-appearance: button;
@@ -237,9 +294,9 @@ export default {
     text-decoration: none;
     color: initial;
 
-    padding: 1%;
+    padding: 15pt;
 
-    font-size: 13px;
+    font-size: 14px;
 
     cursor: pointer;
 
