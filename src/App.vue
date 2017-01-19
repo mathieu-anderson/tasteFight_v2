@@ -16,25 +16,44 @@
    </div> -->
 
   <div id="app" class="container">
+
     <h1 v-on:click="reload()">tasteFight</h1>
-      <h2>{{msg}}</h2>
+
         <form
           v-show="showForm"
           v-on:submit.prevent="onSubmit">
             <input
             type="text"
+            placeholder="a movie to argue about"
             v-show="showForm"
             v-model="movie_name">
             <input
             type="submit"
-            value="fight!"
+            value="👊"
             v-show="showForm"
             v-on:keyup.enter="submit">
         </form>
-        <div id="movie_name"
+
+        <!-- <div id="movie_name"
           v-show="showForm">
             {{movie_name}}
+        </div> -->
+
+        <div class="api_res_list"
+          v-show="showList">
+          Did you mean ...
+          <ul>
+            <li class="{ bold }"
+              v-for="movie in api_res_movie_list"
+              v-on:click="onChoosing(movie.original_title, movie.release_date)"
+              v-on:hover="embolden()">
+                {{movie.original_title}}
+                ({{movie.release_date[0]}}{{movie.release_date[1]}}{{movie.release_date[2]}}{{movie.release_date[3]}})
+                <!-- <img v-bind:src="poster_base_url + movie.poster_path"> -->
+            </li>
+          </ul>
         </div>
+
         <div class="api_res"
         v-show="showAPIRes">
           <img v-bind:src="api_res_poster">
@@ -44,6 +63,7 @@
           <br />
           {{api_res_overview}}
         </div>
+
         <div class="rate"
         v-show="showRate">
         How do you rate it ?
@@ -58,19 +78,33 @@
           class="star-rating star-rating__checkbox"
           type="radio"
           v-model="value">
-          ★
+          ♥
         </label>
       </div>
     </div>
+
     <p
-    v-show="showMyrating">Your rating : {{value}}</p>
+    v-show="showTMDB">Your rating : {{value}}
+    </p>
+
     <p
     v-show="showTMDB">
-    Everyone else's rating : {{api_res_rating}}
-    <br>
-    <button v-on:click="reload()">again?</button>
-  </p>
+      {{api_res_number_of_votes}} people's rating : {{api_res_rating}}
+      <br><br>
+      <a class="button"
+        v-on:click="reload()">
+          again?
+      </a>
+      <a class="button"
+        v-bind:href="go_to_TMDB"
+        v-on:mouseover="goToTMDB()"
+        target="_blank">
+        fight with them?
+      </a>
+    </p>
+
   </div>
+
 </template>
 
 <script>
@@ -85,9 +119,7 @@ import Rating from 'vue-bulma-rating'
 
 export default {
   name: 'app',
-  components: {
-    Rating
-  },
+
   data () {
     return {
       //rating component
@@ -101,14 +133,22 @@ export default {
       showTMDB: false,
       showMyrating: false,
       showAPIRes: false,
+      showList: false,
       movie_name: '',
+      movie_chosen: '',
+      api_res_movie_list: '',
       api_res_name: '',
       api_res_overview: '',
       api_res_poster: '',
       api_res_rating: '',
-      poster_base_url: 'https://image.tmdb.org/t/p/w300_and_h450_bestv2/'
+      api_res_number_of_votes: '',
+      api_res_link: '',
+      api_res_ID: '',
+      poster_base_url: 'https://image.tmdb.org/t/p/w300_and_h450_bestv2/',
+      go_to_TMDB: ''
     }
   },
+
   methods: {
     //rating component
     starOver: function (index) {
@@ -121,36 +161,60 @@ export default {
     },
 
     setRate: function (value) {
-      this.showRate = false
       this.temp_value = value
       this.value = value
+      this.showRate = false
       this.showTMDB = true
       axios.get(`https://api.themoviedb.org/3/search/movie?api_key=${this.TMDB_api_key}&language=en-US&query=${this.movie_name}&page=1&include_adult=false`)
         .then(res => {
           this.api_res_rating = res.data.results[0].vote_average
+          this.api_res_number_of_votes = res.data.results[0].vote_count
         })
     },
 
-    //triggered when submitting a movie name
+    //triggered when submitting a movie name -> get list of movies matching the movie_name
     onSubmit: function () {
       axios.get(`https://api.themoviedb.org/3/search/movie?api_key=${this.TMDB_api_key}&language=en-US&query=${this.movie_name}&page=1&include_adult=false`)
-        .then(res => {
-          this.api_res_name = res.data.results[0].original_title
-          this.api_res_overview = res.data.results[0].overview
-          this.api_res_poster = this.poster_base_url + res.data.results[0].poster_path
+        .then (res => {
+          this.showForm = false
+          this.showList = true
+          const movie_list = res.data.results.slice(0, 5)
+          this.api_res_movie_list = movie_list
         })
         .catch(err => this.reload())
-      this.showForm = false
-      this.showRate = true
-      this.showAPIRes = true
-      this.showMyrating = true
     },
+
+    // triggered on clicking a movie in the api_res_movie_list : send exact name + year request to the api
+    onChoosing: function (movie_title, movie_date) {
+      const movie_year = movie_date.slice(0, 4)
+      axios.get(`https://api.themoviedb.org/3/search/movie?api_key=${this.TMDB_api_key}&language=en-US&query=${movie_title}&page=1&include_adult=false&year=${movie_year}`)
+      .then(res => {
+        this.showList = false
+        this.showRate = true
+        this.showAPIRes = true
+        this.showMyrating = true
+        this.api_res_poster = this.poster_base_url + res.data.results[0].poster_path
+        this.api_res_name = res.data.results[0].original_title
+        this.api_res_overview = res.data.results[0].overview
+        this.api_res_ID = res.data.results[0].id
+      })
+      .catch(err => this.reload())
+    },
+
+    //go to movie page on TMDB
+    goToTMDB: function () {
+      this.go_to_TMDB = 'https://www.themoviedb.org/movie/' + this.api_res_ID
+    },
+
+    //reset all values
     reload: function () {
       this.showForm = true
       this.showAPIRes = false
       this.showRate = false
       this.showMyrating = false
       this.showTMDB = false
+      this.showList = false
+      this.api_res_movie_list = ''
       this.movie_name = ''
       this.api_res_name = ''
       this.api_res_overview = ''
@@ -158,13 +222,32 @@ export default {
       this.api_res_rating = ''
       this.value = ''
       this.temp_value = ''
-
     }
   }
 }
 </script>
 
 <style>
+
+.button {
+    -webkit-appearance: button;
+    -moz-appearance: button;
+    appearance: button;
+
+    text-decoration: none;
+    color: initial;
+
+    padding: 1%;
+
+    font-size: 13px;
+
+    cursor: pointer;
+
+}
+input {
+  font-size: 30pt;
+  padding: 2%;
+}
 
 img  {
   max-width: 45vw;
@@ -233,8 +316,9 @@ img  {
 }
 
 h1 {
-  font-size: 40px;
+  font-size: 50pt;
   font-weight: bold;
+  margin-top: 10vh;
   cursor: pointer;
 }
 
@@ -245,14 +329,16 @@ h2 {
 ul {
   list-style-type: none;
   padding: 0;
+  margins: 25vw;
 }
 
 li {
-  display: inline-block;
-  margin: 0 10px;
+  padding: 1vh;
+  cursor: pointer;
 }
 
 a {
   color: #42b983;
 }
+
 </style>
