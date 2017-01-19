@@ -34,11 +34,6 @@
             v-on:keyup.enter="submit">
         </form>
 
-        <!-- <div id="movie_name"
-          v-show="showForm">
-            {{movie_name}}
-        </div> -->
-
         <div class="api_res_list"
           v-show="showList">
           <span class="big">Did you mean ...</span>
@@ -52,6 +47,7 @@
                 <!-- <img v-bind:src="poster_base_url + movie.poster_path"> -->
             </li>
           </ul>
+          <span v-on:click="reload()" class="big pointer">↵</span>
         </div>
 
         <div class="api_res"
@@ -65,11 +61,6 @@
               <td>{{api_res_overview}}</td>
             </tr>
           </table>
-          <!-- <br />
-            <i>{{api_res_name}}</i>
-          <br />
-          <br />
-          {{api_res_overview}} -->
         </div>
 
         <div class="rate"
@@ -207,7 +198,11 @@ export default {
           this.showForm = false
           this.showList = true
           const movie_list = res.data.results.slice(0, 5)
-          this.api_res_movie_list = movie_list
+          if (movie_list.length === 0) {
+            alert("nothing found :(")
+            this.reload()
+          } else {
+          this.api_res_movie_list = movie_list}
         })
         .catch(err => this.reload())
     },
@@ -256,6 +251,10 @@ export default {
 </script>
 
 <style>
+
+.pointer {
+  cursor: pointer;
+}
 
 .big {
   font-size: 18pt;
