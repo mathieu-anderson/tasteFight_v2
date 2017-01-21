@@ -63,7 +63,7 @@
           </table>
         </div>
 
-        <div class="rate"
+        <!-- <div class="rate"
         v-show="showRate">
         How do you rate it ?
         <div class="star-rating">
@@ -78,9 +78,10 @@
           type="radio"
           v-model="value">
           ♥
-        </label>
-      </div>
-    </div>
+          </label>
+        </div>
+      </div> -->
+      <Rating></Rating>
 
     <p
     v-show="showTMDB">
@@ -131,14 +132,17 @@
 // import 'vue-instant/dist/vue-instant.css'
 // Vue.use(VueInstant)
 import axios from 'axios'
-import Rating from 'vue-bulma-rating'
+import Rating from './components/rating'
+
 
 // const TMDB_api_key = '3afb334973093028cc5d28d0464b6383'
 // const test = process.env.TMDB_API_KEY
 
 export default {
   name: 'app',
-
+  components: {
+    rating
+  },
   data () {
     return {
       //rating component
@@ -368,10 +372,10 @@ img  {
 }
 
 h1 {
-  font-size: 50pt;
+  font-size: 40pt;
   font-weight: bold;
-  margin-top: 10vh;
-  cursor: pointer;
+text-shadow: 1px 1px 4px rgba(150, 150, 150, 0.98);
+cursor: pointer;
 }
 
 h2 {
