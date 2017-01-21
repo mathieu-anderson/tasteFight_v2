@@ -1,6 +1,5 @@
 <template lang="html">
-  <div class="rate"
-  v-show="showRate">
+
   How do you rate it ?
   <div class="star-rating">
     <label class="star-rating__star"
@@ -16,7 +15,7 @@
     ♥
     </label>
   </div>
-  </div>
+
 </template>
 
 <script>
@@ -26,7 +25,7 @@ export default {
     return {
       value: '',
       temp_value: '',
-      ratings: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
+      ratings: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
     }
   },
 
@@ -57,15 +56,6 @@ export default {
 
 <style lang="css">
 
-.rating_head {
-  font-size: 14pt;
-  font-weight: bold;
-}
-
-.rating_values {
-  font-size: 20pt;
-  font-weight: bold;
-}
 .star-rating__checkbox {
   position: absolute;
   overflow: hidden;
