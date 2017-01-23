@@ -1,20 +1,5 @@
 <template>
 
-  <!-- <nav class="navbar navbar-default">
-     <div class="container">
-       <ul class="nav navbar-nav">
-         <li><a v-link="'home'">Home</a></li>
-         <li><a v-link="'login'">Login</a></li>
-         <li><a v-link="'signup'">Sign Up</a></li>
-         <li><a v-link="'secretquote'">Secret Quote</a></li>
-         <li><a v-link="'login'">Logout</a></li>
-       </ul>
-     </div>
-   </nav>
-   <div class="container">
-     <router-view></router-view>
-   </div> -->
-
   <div id="app" class="container">
 
     <h1 v-on:click="reload()">tasteFight</h1>
@@ -63,7 +48,7 @@
           </table>
         </div>
 
-        <!-- <div class="rate"
+      <div class="rate"
         v-show="showRate">
         How do you rate it ?
         <div class="star-rating">
@@ -80,8 +65,7 @@
           ♥
           </label>
         </div>
-      </div> -->
-      <rating></rating>
+      </div>
 
     <p
     v-show="showTMDB">
@@ -128,31 +112,23 @@
 </template>
 
 <script>
-// import VueInstant from 'vue-instant'
-// import 'vue-instant/dist/vue-instant.css'
-// Vue.use(VueInstant)
 import axios from 'axios'
-import rating from './components/rating.vue'
-
 
 // const TMDB_api_key = '3afb334973093028cc5d28d0464b6383'
 // const test = process.env.TMDB_API_KEY
 
 export default {
   name: 'app',
-  components: {
-    rating
-  },
   data () {
     return {
-      //rating component
-      // value: '',
-      // temp_value: '',
-      // ratings: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
+      // rating component
+      value: '',
+      temp_value: '',
+      ratings: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
       TMDB_api_key: '3afb334973093028cc5d28d0464b6383',
       msg: 'Fight for your tastes!',
       showForm: true,
-      // showRate: false,
+      showRate: false,
       showTMDB: false,
       showMyrating: false,
       showAPIRes: false,
@@ -174,26 +150,26 @@ export default {
 
   methods: {
     //rating component
-    // starOver: function (index) {
-    //   this.temp_value = this.value
-    //   this.value = index
-    // },
-    //
-    // starOut: function (index) {
-    //   this.value = this.temp_value
-    // },
-    //
-    // setRate: function (value) {
-    //   this.temp_value = value
-    //   this.value = value
-    //   this.showRate = false
-    //   this.showTMDB = true
-    //   axios.get(`https://api.themoviedb.org/3/search/movie?api_key=${this.TMDB_api_key}&language=en-US&query=${this.movie_name}&page=1&include_adult=false`)
-    //     .then(res => {
-    //       this.api_res_rating = res.data.results[0].vote_average
-    //       this.api_res_number_of_votes = res.data.results[0].vote_count
-    //     })
-    // },
+    starOver: function (index) {
+      this.temp_value = this.value
+      this.value = index
+    },
+
+    starOut: function (index) {
+      this.value = this.temp_value
+    },
+
+    setRate: function (value) {
+      this.temp_value = value
+      this.value = value
+      this.showRate = false
+      this.showTMDB = true
+      axios.get(`https://api.themoviedb.org/3/search/movie?api_key=${this.TMDB_api_key}&language=en-US&query=${this.movie_name}&page=1&include_adult=false`)
+        .then(res => {
+          this.api_res_rating = res.data.results[0].vote_average
+          this.api_res_number_of_votes = res.data.results[0].vote_count
+        })
+    },
 
     //triggered when submitting a movie name -> get list of movies matching the movie_name
     onSubmit: function () {
@@ -237,7 +213,7 @@ export default {
     reload: function () {
       this.showForm = true
       this.showAPIRes = false
-      // this.showRate = false
+      this.showRate = false
       this.showMyrating = false
       this.showTMDB = false
       this.showList = false
@@ -247,8 +223,8 @@ export default {
       this.api_res_overview = ''
       this.api_res_poster = ''
       this.api_res_rating = ''
-      // this.value = ''
-      // this.temp_value = ''
+      this.value = ''
+      this.temp_value = ''
     }
   }
 }
@@ -326,7 +302,7 @@ img  {
   margin-right: 65vh;
 }
 
-/*.star-rating__checkbox {
+.star-rating__checkbox {
   position: absolute;
   overflow: hidden;
   clip: rect(0 0 0 0);
@@ -353,7 +329,7 @@ img  {
 }
 .star-rating__star.disabled:hover {
   cursor: default;
-}*/
+}
 
 #app {
   font-family: 'Avenir', Helvetica, Arial, sans-serif;
