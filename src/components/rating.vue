@@ -1,7 +1,7 @@
 <template lang="html">
 
-  How do you rate it ?
   <div class="star-rating">
+    How do you rate it ?
     <label class="star-rating__star"
     v-for="rating in ratings"
     v-bind:class="{selected: ((value >= rating && value != null))}"
@@ -26,10 +26,12 @@ export default {
       value: '',
       temp_value: '',
       ratings: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
+      showRate: true,
+      showTMDB: false
     }
   },
 
-  methods : {
+  methods: {
     starOver: function (index) {
       this.temp_value = this.value
       this.value = index
