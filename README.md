@@ -1,9 +1,11 @@
-#tasteFight, argue over movies 
+#tasteFight, argue over movies
 
 Personal project for Enspiral Dev Academy. Built with Vue 2.
 
 #Based on one the Vue boilerplate webpack-simple
 
-> A Vue.js project
+# serve with hot reload at localhost:8081
+npm run dev
 
-For detailed explanation on how things work, consult the [docs for vue-loader](http://vuejs.github.io/vue-loader).
+# build for production with minification
+npm run build

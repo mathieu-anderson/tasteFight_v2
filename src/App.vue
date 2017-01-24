@@ -1,20 +1,5 @@
 <template>
 
-  <!-- <nav class="navbar navbar-default">
-     <div class="container">
-       <ul class="nav navbar-nav">
-         <li><a v-link="'home'">Home</a></li>
-         <li><a v-link="'login'">Login</a></li>
-         <li><a v-link="'signup'">Sign Up</a></li>
-         <li><a v-link="'secretquote'">Secret Quote</a></li>
-         <li><a v-link="'login'">Logout</a></li>
-       </ul>
-     </div>
-   </nav>
-   <div class="container">
-     <router-view></router-view>
-   </div> -->
-
   <div id="app" class="container">
 
     <h1 v-on:click="reload()">tasteFight</h1>
@@ -63,7 +48,7 @@
           </table>
         </div>
 
-        <div class="rate"
+      <div class="rate"
         v-show="showRate">
         How do you rate it ?
         <div class="star-rating">
@@ -78,9 +63,9 @@
           type="radio"
           v-model="value">
           ♥
-        </label>
+          </label>
+        </div>
       </div>
-    </div>
 
     <p
     v-show="showTMDB">
@@ -127,21 +112,16 @@
 </template>
 
 <script>
-// import VueInstant from 'vue-instant'
-// import 'vue-instant/dist/vue-instant.css'
-// Vue.use(VueInstant)
 import axios from 'axios'
-import Rating from 'vue-bulma-rating'
 
 // const TMDB_api_key = '3afb334973093028cc5d28d0464b6383'
 // const test = process.env.TMDB_API_KEY
 
 export default {
   name: 'app',
-
   data () {
     return {
-      //rating component
+      // rating component
       value: '',
       temp_value: '',
       ratings: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
@@ -368,10 +348,10 @@ img  {
 }
 
 h1 {
-  font-size: 50pt;
+  font-size: 40pt;
   font-weight: bold;
-  margin-top: 10vh;
-  cursor: pointer;
+text-shadow: 1px 1px 4px rgba(150, 150, 150, 0.98);
+cursor: pointer;
 }
 
 h2 {
